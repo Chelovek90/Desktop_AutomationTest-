@@ -86,8 +86,8 @@ public class CsModule extends BaseElements implements OpenModule {
         makeElementScreenshot(mainSection, name, appointment.ACTUAL);
         click(mainSection);
         tree.clickWellsTopTree();
-        tree.clickWell(INDEXACTUALWELL);
-        tree.clickTrajectoryCheckBox(INDEXACTUALWELL);
+//        tree.clickWell(INDEXACTUALWELL);
+//        tree.clickTrajectoryCheckBox(INDEXACTUALWELL);
         makeElementScreenshot(mainSection, name, appointment.EXPECTED);
         takeDiffImage(name);
         return this;

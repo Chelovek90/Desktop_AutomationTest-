@@ -1,76 +1,52 @@
-import app.modules.CsModule;
-import app.view.treeProject.WellsTreeProject;
+import app.modules.loader.LoadLog;
 import base.BaseTest;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import java.util.List;
 
 public class GeonaftTest extends BaseTest {
     private final int INDEXACTUALWELL = 0;
     private final int INDEXKEYWELL = 1;
 
-    @Disabled
     @Test
-    public void chooseActaulWeellOnCS() {
-        new CsModule(desktopSession)
-                .chooseActualWell();
+    public void test() throws InterruptedException {
+        List<RemoteWebElement> indicator = desktopSession.findElementsByAccessibilityId("IndicatorText");
+        System.out.println(indicator.size());
+        System.out.println(indicator.size());
+//        RemoteWebElement el = desktopSession.findElementByName("Открытие");
+//        List<WebElement> listNameFiled = el.findElementsByName("Имя файла:");
+//        System.out.println(listNameFiled.size());
+//        listNameFiled.get(0).click();
+//        Thread.sleep(200);
+//        listNameFiled.get(1).click();
+//        Thread.sleep(200);
+//        listNameFiled.get(2).click();
+//        new BaseTreeProject(desktopSession)
+//                .clickFluidsTree();
+//        new BaseTreeProject(desktopSession)
+//                .clickTrendsTree();
+//        new BaseTreeProject(desktopSession)
+//                .clickSurfacesTree();
+//        new BaseTreeProject(desktopSession)
+//                .clickPolygonsTree();
+//        new BaseTreeProject(desktopSession)
+//                .clickModulesTree();
+
     }
 
     @Test
-    @DisplayName("Отображение актуальной скважины в окне главного разреза")
-    public void shouldDisplayActualWell(TestInfo testInfo) {
-        String name = testInfo.getDisplayName();
-        new CsModule(desktopSession)
-                .openModule()
-                .chooseActualWell()
-                .chooseKeyWell()
-                .checkDisplayActualWell(name);
-    }
+    public void testWells() {
 
-//    @Test
-//    public  void testOnCheckBoxTrajectory() {
-//        new CsModule(desktopSession)
-//                .offOnCheckBoxTrajectory(INDEXACTUALWELL);
-//    }
+        new LoadLog(desktopSession)
+                .openLoader()
+                .clickOpenFile()
+                .loadLog("D:\\Data for testing\\Каротажи", "12_actual_CUT_2m.las")
+                .clickLoadFile();
 
-    @Test
-    public void test() {
 
-//        new WellsTreeProject(desktopSession)
-//                .clickWellsTree();
 
-//        new WellsTreeProject(desktopSession)
-//                .clickWellInTreeProject(0);
 
-        new WellsTreeProject(desktopSession)
-                .clickWellDesignsCheckBox(0);
-    }
-
-    @Test
-    public void testExpander() {
-        RemoteWebElement element = desktopSession.findElementByName("Geosteering.UI.Controls.DataTreeView.DataTree.TrajectoryTreeViewItem");
-        RemoteWebElement element1 = (RemoteWebElement) element.findElementByClassName("Button");
-        boolean expander = Boolean.parseBoolean(element1.getAttribute("Toggle.ToggleState"));
-        System.out.println(expander);
-        System.out.println(element1.getAttribute("Toggle.ToggleState"));
-    }
-
-    @Test
-    public void testLoader() {
-//        new Loader(desktopSession)
-//                .openModule()
-//                .clickOpenFileButton()
-//                .loadFile("D:\\Data for testing\\Поверхности\\GRD", "U3_top.grd")
-//                .clickLoadFileButton()
-//                .checkLoadSurface("U3_t");
-
-//        new WellsTreeProject(desktopSession)
-//                .searchWellInTree("WBS");
-//    }
-
-        new WellsTreeProject(desktopSession)
-                .clickWellByName("Опорная");
     }
 }

@@ -15,8 +15,8 @@ public class Ribbon extends BaseElements {
     public Ribbon(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
         this.projectButton = (RemoteWebElement) projectButtonTab.findElementByClassName(clickablePointTab);
-        this.toolsButton = (RemoteWebElement) toolsButtonTab.findElementByClassName(clickablePointTab);
-        this.optionButton = (RemoteWebElement) optionButtonTab.findElementByClassName(clickablePointTab);
+//        this.toolsButton = (RemoteWebElement) toolsButtonTab.findElementByClassName(clickablePointTab);
+//        this.optionButton = (RemoteWebElement) optionButtonTab.findElementByClassName(clickablePointTab);
     }
 
     @FindBy(className = "ProjectTab")

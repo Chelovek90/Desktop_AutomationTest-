@@ -8,15 +8,20 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BaseTreeProject extends Base {
+
+    public BaseTreeProject(WindowsDriver<RemoteWebElement> driver) {
+        super(driver);
+        this.treeWindow = mainView;
+    }
+
     protected RemoteWebElement treeWindow;
 
     @WindowsFindBy(accessibility = "TreeView")
     protected RemoteWebElement mainView;
-
-    private String searchTarget = "TextBlock";
 
     private String fluidContactsBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.FluidContactsTreeViewItem";
     private String zonesBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.ZonesTreeViewItem";
@@ -35,14 +40,11 @@ public class BaseTreeProject extends Base {
     protected String checkBox = "CheckBox";
     protected String clickablePoint = "TextBlock";
 
-    public BaseTreeProject(WindowsDriver<RemoteWebElement> driver) {
-        super(driver);
-        this.treeWindow = mainView;
-    }
-
     public boolean checkExpander(RemoteWebElement element) {
         int expanderPosition;
-        RemoteWebElement expander = (RemoteWebElement) element.findElementByClassName(this.expander);
+        List <WebElement> expanderList = element.findElementsByClassName(this.expander);
+        assertThat("Block " + element.getTagName() + " is empty", expanderList.size() != 0);
+        RemoteWebElement expander = (RemoteWebElement) expanderList.get(0);
         expanderPosition = Integer.parseInt(expander.getAttribute("Toggle.ToggleState"));
         return (expanderPosition == 0);
     }
