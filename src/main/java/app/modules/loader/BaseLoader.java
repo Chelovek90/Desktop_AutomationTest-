@@ -2,9 +2,9 @@ package app.modules.loader;
 
 import app.BaseElements;
 import app.OpenModule;
-import app.view.ribbon.Ribbon;
+import app.view.ribbon.BaseRibbon;
+import app.view.ribbon.ProjectTab;
 import app.view.treeProject.BaseTreeProject;
-import app.view.treeProject.WellsTreeProject;
 import io.appium.java_client.pagefactory.WindowsFindBy;
 import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.WebElement;
@@ -15,13 +15,13 @@ import java.util.List;
 
 public abstract class BaseLoader extends BaseElements implements OpenModule {
 
-    private Ribbon ribbon;
+    private BaseRibbon ribbon;
     private BaseTreeProject treeProject;
 
     public BaseLoader(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
-        this.ribbon = new Ribbon(driver);
-        this.treeProject = new BaseTreeProject(driver);
+//        this.treeProject = new BaseTreeProject(driver);
+        this.ribbon = new BaseRibbon(driver);
     }
 
     @Override

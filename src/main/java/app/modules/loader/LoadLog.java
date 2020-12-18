@@ -1,6 +1,5 @@
 package app.modules.loader;
 
-import app.view.treeProject.BaseTreeProject;
 import app.view.treeProject.WellsTreeProject;
 import io.appium.java_client.pagefactory.WindowsFindBy;
 import io.appium.java_client.windows.WindowsDriver;
@@ -12,6 +11,7 @@ import java.util.List;
 
 public class LoadLog extends BaseLoader{
 
+    private WellsTreeProject tree;
 
     public LoadLog(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
@@ -63,5 +63,10 @@ public class LoadLog extends BaseLoader{
         return this;
     }
 
+    public LoadLog checkLoadWell() {
+        this.tree = new WellsTreeProject(driver);
+        tree.checkWellByName(wellName);
+        return this;
+    }
 
 }

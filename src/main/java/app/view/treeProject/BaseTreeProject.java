@@ -20,7 +20,8 @@ public class BaseTreeProject extends Base {
 
     protected RemoteWebElement treeWindow;
 
-    @WindowsFindBy(accessibility = "TreeView")
+//    @WindowsFindBy(accessibility = "TreeView")
+    @WindowsFindBy(accessibility = "DataTreeElement")
     protected RemoteWebElement mainView;
 
     private String fluidContactsBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.FluidContactsTreeViewItem";
@@ -39,6 +40,14 @@ public class BaseTreeProject extends Base {
     protected String expander = "Button";
     protected String checkBox = "CheckBox";
     protected String clickablePoint = "TextBlock";
+
+    public void unfoldElementTree(RemoteWebElement element) {
+        if (checkExpander(element)) {
+            RemoteWebElement elementButton = (RemoteWebElement) element.findElementByClassName(clickablePoint);
+            horizontalScroll(treeWindow, elementButton);
+            doubleClick(elementButton);
+        }
+    }
 
     public boolean checkExpander(RemoteWebElement element) {
         int expanderPosition;

@@ -8,7 +8,6 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,38 +60,28 @@ public class WellsTreeProject extends BaseTreeProject {
         this.wellDesignsList = wellDesigns;
     }
 
-    public void unfoldElementTree(RemoteWebElement element) {
-        if (checkExpander(element)) {
-            RemoteWebElement trajectoryButton = (RemoteWebElement) element.findElementByClassName(clickablePoint);
-            horizontalScroll(treeWindow, trajectoryButton);
-            doubleClick(trajectoryButton);
-        }
-    }
-
     public void clickWellsTopTree() {
         unfoldElementTree(wellsTop);
     }
 
-    public void clickWellByName(String name) {
+    public void checkWellByName(String name) {
+        clickWellsTopTree();
         takeWellsList();
         this.targetWellForClick = wellsList.stream()
                 .filter(well -> well.findElement(By.className(clickablePoint)).getText().equals(name))
                 .findFirst().orElse(null);
+        horizontalScroll(mainView, wellsTop);
+        makeElementScreenshot(mainView, targetWellForClick.getText(), appointment.ACTUAL);
         assertTrue(targetWellForClick != null, "Search for name " + name + " returned no results");
-        unfoldElementTree((RemoteWebElement) targetWellForClick);
-//        for (RemoteWebElement element : wellsList) {
-//            String wellName = element.findElementByClassName(clickablePoint).getText();
-//            if (wellName.equals(name)) {
-//               well = element;
-//                if (checkExpander(well)) {
-//                    RemoteWebElement wellButton = (RemoteWebElement) well.findElementByClassName(clickablePoint);
-//                    horizontalScroll(mainView, wellButton);
-//                    doubleClick(wellButton);
-//                    break;
-//                }
-//            }
-//        }
     }
+
+    public void clickWellByName(String name) {
+        checkWellByName(name);
+        unfoldElementTree((RemoteWebElement) targetWellForClick);
+
+    }
+
+
 
 //    public void clickWell(int index) {
 //        takeWellsList();

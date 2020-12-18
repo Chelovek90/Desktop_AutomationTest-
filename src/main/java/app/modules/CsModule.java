@@ -2,7 +2,7 @@ package app.modules;
 
 import app.BaseElements;
 import app.OpenModule;
-import app.view.ribbon.Ribbon;
+import app.view.ribbon.BaseRibbon;
 import app.view.treeProject.WellsTreeProject;
 import app.windows.StartWindow;
 import io.appium.java_client.pagefactory.WindowsFindBy;
@@ -48,19 +48,18 @@ public class CsModule extends BaseElements implements OpenModule {
     private RemoteWebElement keyWell;
     private StartWindow startWindow;
     private WellsTreeProject tree;
-    private Ribbon ribbon;
+    private BaseRibbon baseRibbon;
 
 
     public CsModule(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
         this.startWindow = new StartWindow(driver);
         this.tree = new WellsTreeProject(driver);
-        this.ribbon = new Ribbon(driver);
     }
 
     @Override
     public CsModule openModule() {
-        ribbon.openCsModule();
+
         return this;
     }
 
