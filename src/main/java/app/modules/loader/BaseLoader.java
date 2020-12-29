@@ -3,7 +3,6 @@ package app.modules.loader;
 import app.BaseElements;
 import app.OpenModule;
 import app.view.ribbon.BaseRibbon;
-import app.view.ribbon.ProjectTab;
 import app.view.treeProject.BaseTreeProject;
 import io.appium.java_client.pagefactory.WindowsFindBy;
 import io.appium.java_client.windows.WindowsDriver;
@@ -15,18 +14,18 @@ import java.util.List;
 
 public abstract class BaseLoader extends BaseElements implements OpenModule {
 
-    private BaseRibbon ribbon;
+    private BaseRibbon baseRibbon;
     private BaseTreeProject treeProject;
 
     public BaseLoader(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
 //        this.treeProject = new BaseTreeProject(driver);
-        this.ribbon = new BaseRibbon(driver);
+        this.baseRibbon = new BaseRibbon(driver);
     }
 
     @Override
     public BaseLoader openModule() {
-        ribbon.openLoader();
+        baseRibbon.openLoader();
         this.loaderWindow = (RemoteWebElement) driver.findElementByClassName("Window").findElementByName(loaderWindowSelector);
         this.openFileButton = (RemoteWebElement) loaderWindow.findElementByName(openFileButtonSelector);
         this.loadFileButton = (RemoteWebElement) loaderWindow.findElementByName(loadFileButtonSelector);

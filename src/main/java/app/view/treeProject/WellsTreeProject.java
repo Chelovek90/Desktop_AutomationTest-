@@ -14,22 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WellsTreeProject extends BaseTreeProject {
 
-    protected RemoteWebElement wellsTop;
-    protected WebElement targetWellForClick;
-
-    protected List<WebElement> wellsList;
-    protected List<RemoteWebElement> trajectoryWellsList;
-    protected List<RemoteWebElement> stratigraphiesList;
-    protected List<RemoteWebElement> markersCheckBoxList;
-    protected List<RemoteWebElement> wellDesignsList;
+    private List<WebElement> wellsList;
+    private List<WebElement> logsList;
+    private List<RemoteWebElement> stratigraphiesList;
+    private List<RemoteWebElement> markersCheckBoxList;
+    private List<RemoteWebElement> wellDesignsList;
 
     public WellsTreeProject(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
-        this.wellsTop = (RemoteWebElement) treeWindow.findElementByName(wellsTopBlock);
     }
 
-    protected String wellsTopBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.WellsTreeViewItem";
     private String wells = "Geosteering.UI.Controls.DataTreeView.DataTree.WellTreeViewItem";
+    private String logsMain = "Geosteering.UI.Controls.DataTreeView.DataTree.LogsTreeViewItem";
+    private String logs = "Geosteering.UI.Controls.DataTreeView.DataTree.LogTreeViewItem";
 
     @FindBy(name = "Geosteering.UI.Controls.DataTreeView.DataTree.TrajectoryTreeViewItem")
     private List<RemoteWebElement> trajectories;
@@ -41,11 +38,13 @@ public class WellsTreeProject extends BaseTreeProject {
     private List<RemoteWebElement> wellDesigns;
 
     public void takeWellsList() {
+        RemoteWebElement wellsTop = (RemoteWebElement) treeWindow.findElementByName(wellsTopBlock);
         this.wellsList = wellsTop.findElementsByName(wells);
     }
 
-    public void takeTrajectoryWellsList() {
-        this.trajectoryWellsList = trajectories;
+    public void takeLogsList() {
+        RemoteWebElement logsTop = (RemoteWebElement) treeWindow.findElementByName(logsMain);
+        this.logsList = logsTop.findElementsByName(logs);
     }
 
     public void takeStratigraphiesList() {
@@ -61,24 +60,47 @@ public class WellsTreeProject extends BaseTreeProject {
     }
 
     public void clickWellsTopTree() {
-        unfoldElementTree(wellsTop);
+        unfoldElementTree((RemoteWebElement) treeWindow.findElementByName(wellsTopBlock));
     }
 
-    public void checkWellByName(String name) {
+    public void clickLogsTree() {
+        unfoldElementTree((RemoteWebElement) treeWindow.findElementByName(logsMain));
+    }
+
+    public void checkWellByName(String nameWell) {
+//        DateFormat newDate = new SimpleDateFormat("dd-MM-yy HH-mm-ss");
+//        Date date = new Date();
+//        moveTo(mainViewSelector);
+//        horizontalScroll(mainViewSelector, (RemoteWebElement) treeWindow.findElementByName(wellsTopBlock));
         clickWellsTopTree();
         takeWellsList();
-        this.targetWellForClick = wellsList.stream()
-                .filter(well -> well.findElement(By.className(clickablePoint)).getText().equals(name))
+        this.targetForClick = wellsList.stream()
+                .filter(well -> well.findElement(By.className(clickablePoint)).getText().equals(nameWell))
                 .findFirst().orElse(null);
-        horizontalScroll(mainView, wellsTop);
-        makeElementScreenshot(mainView, targetWellForClick.getText(), appointment.ACTUAL);
-        assertTrue(targetWellForClick != null, "Search for name " + name + " returned no results");
+//        if (targetWellForClick == null){
+//            makeElementScreenshot(mainViewSelector, "Fail search well by name " + newDate.format(date), appointment.ACTUAL);
+//        }else {makeElementScreenshot((RemoteWebElement) treeWindow.findElementByName(wellsTopBlock), targetWellForClick.getText(), appointment.ACTUAL);}
+
+        assertTrue(targetForClick != null, "Search for name " + nameWell + " returned no results");
     }
 
     public void clickWellByName(String name) {
         checkWellByName(name);
-        unfoldElementTree((RemoteWebElement) targetWellForClick);
+        unfoldElementTree((RemoteWebElement) targetForClick);
+    }
 
+    public void checkLogByName(String nameWell, String nameLog) {
+        clickWellByName(nameWell);
+        clickLogsTree();
+        takeLogsList();
+        this.targetForClick = logsList.stream()
+                .filter(trajectory -> trajectory.findElement(By.className(clickablePoint)).getText().equals(nameLog))
+                .findFirst().orElse(null);
+        assertTrue(targetForClick != null, "Search for name " + nameLog + " returned no results");
+    }
+
+    public void clickEditContextMenu(){
+        clickEditContextMenu((RemoteWebElement) targetForClick);
     }
 
 

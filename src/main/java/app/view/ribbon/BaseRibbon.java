@@ -15,8 +15,7 @@ public class BaseRibbon extends BaseElements {
     public BaseRibbon(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
         this.ribbonPanel = ribbonPanelSelector;
-        this.projectTab = (RemoteWebElement) ribbonPanel.findElementByClassName(projectTabSelector);
-        this.projectButtonTab = (RemoteWebElement) projectTab.findElementByClassName(tabButtonSelector);
+
     }
 
     @WindowsFindBy(accessibility = "RibbonGeo")
@@ -25,8 +24,14 @@ public class BaseRibbon extends BaseElements {
     private String tabButtonSelector = "RibbonTabHeader";
     private String projectTabSelector = "ProjectTab";
     private String loaderButtonSelector = "Geosteering.Geonaft.Module.Dataloader.Modularity.DataLoaderToolbarInfo";
+    private String editorButtonSelector = "Geosteering.Geonaft.Module.DataEditor.DataEditorToolbarInfo";
+    private String CsButtonSelector = "Geosteering.Geonaft.Module.CrossSection.CrossSectionToolbarInfo";
+    private String syntheticsButtonSelector = "Geosteering.Geonaft.Module.Synthetics.SyntheticsToolbarInfo";
+    private String correlationButtonSelector = "Geosteering.Geonaft.Module.CorrelationPanel.Modularity.CorrelationPanelToolbarInfo";
 
     public void clickProjectTab() {
+        this.projectTab = (RemoteWebElement) ribbonPanel.findElementByClassName(projectTabSelector);
+        this.projectButtonTab = (RemoteWebElement) projectTab.findElementByClassName(tabButtonSelector);
         click(projectButtonTab);
     }
 
@@ -35,6 +40,24 @@ public class BaseRibbon extends BaseElements {
         click((RemoteWebElement) projectTab.findElementByName(loaderButtonSelector));
     }
 
+    public void openEditor() {
+        clickProjectTab();
+        click((RemoteWebElement) projectTab.findElementByName(editorButtonSelector));
+    }
 
+    public void openCs() {
+        clickProjectTab();
+        click((RemoteWebElement) projectTab.findElementByName(CsButtonSelector));
+    }
+
+    public void openSynthetics() {
+        clickProjectTab();
+        click((RemoteWebElement) projectTab.findElementByName(syntheticsButtonSelector));
+    }
+
+    public void openCorrelation() {
+        clickProjectTab();
+        click((RemoteWebElement) projectTab.findElementByName(correlationButtonSelector));
+    }
 
 }

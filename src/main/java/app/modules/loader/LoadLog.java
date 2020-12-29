@@ -36,8 +36,7 @@ public class LoadLog extends BaseLoader{
     private RemoteWebElement treeLoad;
     private List<WebElement> curvesLogList;
 
-    protected String wellName;
-    protected String logName;
+
 
     public LoadLog openLoader() {
         openModule();
@@ -66,6 +65,20 @@ public class LoadLog extends BaseLoader{
     public LoadLog checkLoadWell() {
         this.tree = new WellsTreeProject(driver);
         tree.checkWellByName(wellName);
+        return this;
+    }
+
+    public LoadLog checkLoadLog() {
+        this.tree = new WellsTreeProject(driver);
+        tree.checkLogByName(wellName, logName);
+        return this;
+    }
+
+    public LoadLog checkEditor() {
+        tree.clickEditContextMenu();
+        RemoteWebElement table = driver.findElementByAccessibilityId("dataPresenter");
+        List<WebElement> list = table.findElementsByName("System.Data.DataRowView");
+        System.out.println(list.size());
         return this;
     }
 

@@ -1,8 +1,8 @@
 import app.modules.loader.LoadLog;
-import app.view.treeProject.WellsTreeProject;
+import app.view.mainView.BaseMainView;
+import app.view.treeProject.BaseTreeProject;
 import base.BaseTest;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.List;
@@ -39,6 +39,10 @@ public class GeonaftTest extends BaseTest {
 
     @Test
     public void testWells() {
+
+//        new WellsTreeProject(desktopSession)
+//                .clickLogsTree();
+
 //        RemoteWebElement el = desktopSession.findElementByAccessibilityId("DataTreeElement");
 //        RemoteWebElement el1 = desktopSession.findElementByAccessibilityId("TreeView");
 //        RemoteWebElement el2 = desktopSession.findElementByName("Geosteering.UI.Controls.DataTreeView.DataTree.WellsTreeViewItem");
@@ -46,17 +50,14 @@ public class GeonaftTest extends BaseTest {
 //        System.out.println(el1.getAttribute("ClickablePoint"));
 //        System.out.println(el2.getAttribute("ClickablePoint"));
 
-//        new WellsTreeProject(desktopSession)
-//                .clickWellsTopTree();
-
-
-
         new LoadLog(desktopSession)
-                .openLoader()
-                .clickOpenFile()
-                .loadLog("D:\\Data for testing\\Каротажи", "12_actual_CUT_2m.las")
-                .clickLoadFile()
 
-                .checkLoadWell();
+                .openLoader();
+//                .clickOpenFile()
+//                .loadLog("D:\\Data for testing\\Каротажи", "12_actual_CUT_2m.las")
+//                .clickLoadFile()
+//                .checkLoadLog()
+//                .checkEditor();
+
     }
 }
