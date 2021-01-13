@@ -4,6 +4,8 @@ import app.Base;
 import app.BaseElements;
 import io.appium.java_client.pagefactory.WindowsFindBy;
 import io.appium.java_client.windows.WindowsDriver;
+import org.apache.commons.collections.functors.NotNullPredicate;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BaseTreeProject extends BaseElements {
@@ -20,14 +23,18 @@ public class BaseTreeProject extends BaseElements {
         this.treeWindow = mainViewSelector;
     }
 
+    private List<WebElement> surfacesList;
+    private String surfaces = "Geosteering.UI.Controls.DataTreeView.DataTree.SurfaceTreeViewItem";
+
     protected RemoteWebElement treeWindow;
-    protected RemoteWebElement contextMenu;
     protected RemoteWebElement editContextMenu;
 
     @WindowsFindBy(accessibility = "TreeView")
     protected RemoteWebElement mainViewSelector;
     @FindBy(className = "ContextMenu")
     protected RemoteWebElement contextMenuSelector;
+    @WindowsFindBy(accessibility = "OKButton")
+    protected RemoteWebElement okButton;
 
     protected String wellsTopBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.WellsTreeViewItem";
     private String fluidContactsBlock = "Geosteering.UI.Controls.DataTreeView.DataTree.FluidContactsTreeViewItem";
@@ -45,7 +52,6 @@ public class BaseTreeProject extends BaseElements {
 
     protected String expander = "Button";
     protected String checkBox = "CheckBox";
-    protected String clickablePoint = "TextBlock";
 
 //    public void getContextMenu (RemoteWebElement element) {
 //        rightClick(element);
@@ -53,11 +59,11 @@ public class BaseTreeProject extends BaseElements {
 //        this.editContextMenu = (RemoteWebElement) contextMenu.findElementByName("Редактировать");
 //    }
 
-    public void clickEditContextMenu(RemoteWebElement element) {
+    public void getContextMenu(RemoteWebElement element) {
+        scrollToElementTree(element);
         rightClick(element);
-        this.contextMenu = contextMenuSelector;
+        RemoteWebElement contextMenu = contextMenuSelector;
         this.editContextMenu = (RemoteWebElement) contextMenu.findElementByName("Редактировать");
-        click(editContextMenu);
     }
 
     public void unfoldElementTree(RemoteWebElement element) {
@@ -66,6 +72,11 @@ public class BaseTreeProject extends BaseElements {
             horizontalScroll(treeWindow, elementButton);
             doubleClick(elementButton);
         }
+    }
+
+    public void scrollToElementTree(RemoteWebElement element) {
+            RemoteWebElement elementButton = (RemoteWebElement) element.findElementByClassName(clickablePoint);
+            horizontalScroll(treeWindow, elementButton);
     }
 
     public boolean checkExpander(RemoteWebElement element) {
@@ -100,13 +111,22 @@ public class BaseTreeProject extends BaseElements {
         }
     }
 
+    public void takeSurfacesList() {
+        this.surfacesList = treeWindow.findElementsByName(surfaces);
+    }
+
     public void clickSurfacesTree() {
         RemoteWebElement surfaces = (RemoteWebElement) treeWindow.findElementByName(surfacesBlock);
-        if (checkExpander(surfaces)) {
-            RemoteWebElement surfacesButton = (RemoteWebElement) surfaces.findElementByClassName(clickablePoint);
-            horizontalScroll(treeWindow, surfacesButton);
-            doubleClick(surfacesButton);
-        }
+        unfoldElementTree(surfaces);
+    }
+
+    public void checkSurfacesByName(String nameSurface) {
+        clickSurfacesTree();
+        takeSurfacesList();
+        this.targetForClick = surfacesList.stream()
+                .filter(surface -> surface.findElement(By.className(clickablePoint)).getText().equals(nameSurface))
+                .findFirst().orElse(null);
+        assertTrue(targetForClick != null, "Search surfaces by name " + nameSurface + " returned no results");
     }
 
     public void clickPolygonsTree() {
@@ -181,10 +201,20 @@ public class BaseTreeProject extends BaseElements {
         }
     }
 
-    public void searchSurfacesInTree(String name) {
-        clickSurfacesTree();
-        boolean result = false;
-        List<WebElement> results = treeWindow.findElementsByName(name);
-        assertTrue(results.size() == 1, "Loaded surface not found");
+
+    public void clickEditContextMenu(){
+        getContextMenu((RemoteWebElement)targetForClick);
+        click(editContextMenu);
+        List<WebElement> attention = driver.findElementByClassName("Window").findElementsByName("Предупреждение");
+        if (attention.size() != 0) {
+            RemoteWebElement ok = okButton;
+            click(ok);
+        }
+    }
+
+    public void checkDataEditor(){
+        RemoteWebElement table = driver.findElementByAccessibilityId("dataPresenter");
+        List<WebElement> list = table.findElementsByName("System.Data.DataRowView");
+        assertTrue(list.size() != 0, "Data is empty");
     }
 }

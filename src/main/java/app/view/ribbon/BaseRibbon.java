@@ -4,7 +4,10 @@ import app.BaseElements;
 import io.appium.java_client.pagefactory.WindowsFindBy;
 import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import java.util.List;
 
 public class BaseRibbon extends BaseElements {
 
@@ -23,6 +26,7 @@ public class BaseRibbon extends BaseElements {
 
     private String tabButtonSelector = "RibbonTabHeader";
     private String projectTabSelector = "ProjectTab";
+    private String modulesGroupSelector = "RibbonGroup";
     private String loaderButtonSelector = "Geosteering.Geonaft.Module.Dataloader.Modularity.DataLoaderToolbarInfo";
     private String editorButtonSelector = "Geosteering.Geonaft.Module.DataEditor.DataEditorToolbarInfo";
     private String CsButtonSelector = "Geosteering.Geonaft.Module.CrossSection.CrossSectionToolbarInfo";
@@ -37,7 +41,9 @@ public class BaseRibbon extends BaseElements {
 
     public void openLoader() {
         clickProjectTab();
-        click((RemoteWebElement) projectTab.findElementByName(loaderButtonSelector));
+        List<WebElement> groups = projectTab.findElementsByClassName(modulesGroupSelector);
+        RemoteWebElement dataGroup = (RemoteWebElement) groups.get(0);
+        click((RemoteWebElement) dataGroup.findElementByName(loaderButtonSelector));
     }
 
     public void openEditor() {

@@ -23,6 +23,17 @@ public abstract class BaseLoader extends BaseElements implements OpenModule {
         this.baseRibbon = new BaseRibbon(driver);
     }
 
+    protected String attributeName = "Value.Value";
+    private String loaderWindowSelector = "ЗАГРУЗЧИК ДАННЫХ";
+    @WindowsFindBy(accessibility = "cbName")
+    private RemoteWebElement cbLoadFileName;
+    @FindBy(name = "Geosteering.Geonaft.Module.Dataloader.Classes.DataTree.Items.LogTreeItem")
+    private RemoteWebElement downloadedFile;
+    private String openFileButtonSelector = "Открыть файл";
+    private String loadFileButtonSelector = "Загрузить";
+    private String skipButtonSelector = "Пропустить";
+    private String closeButtonSelector = "Закрыть";
+
     @Override
     public BaseLoader openModule() {
         baseRibbon.openLoader();
@@ -33,68 +44,14 @@ public abstract class BaseLoader extends BaseElements implements OpenModule {
         this.closeFileButton = (RemoteWebElement) loaderWindow.findElementByName(closeButtonSelector);
         return this;
     }
-
-    private List<RemoteWebElement> indicatorLoad;
-    private String indicatorText = "Загрузка данных";
-
-    protected RemoteWebElement loaderWindow;
     private RemoteWebElement openFileButton;
     private RemoteWebElement loadFileButton;
     private RemoteWebElement skipFileButton;
     private RemoteWebElement closeFileButton;
 
-    private RemoteWebElement openingWindow;
-    private RemoteWebElement openingWindowOpenButton;
-    private RemoteWebElement openingWindowCancelButton;
-    private RemoteWebElement openingWindowLinkField;
-    private RemoteWebElement openingWindowFileNameField;
-
-    private String loaderWindowSelector = "ЗАГРУЗЧИК ДАННЫХ";
-    @WindowsFindBy(accessibility = "cbName")
-    private RemoteWebElement cbLoadFileName;
-    @FindBy(name = "Geosteering.Geonaft.Module.Dataloader.Classes.DataTree.Items.LogTreeItem")
-    private RemoteWebElement downloadedFile;
-    private String openFileButtonSelector = "Открыть файл";
-    private String loadFileButtonSelector = "Загрузить";
-    private String skipButtonSelector = "Пропустить";
-    private String closeButtonSelector = "Закрыть";
-    private String openingWindowOpenButtonSelector = "Открыть";
-    private String openingWindowCancelButtonSelector = "Отмена";
-    private String openingWindowLinkFieldSelector = "Предыдущие расположения";
-    private String openingWindowFileNameFieldSelector = "Имя файла:";
-
-    @FindBy(name = "Открытие")
-    private RemoteWebElement openingWindowSelector;
-
-    public void waitLoading() {
-        boolean load = true;
-        while (load) {
-            List<WebElement> indicator = loaderWindow.findElementsByName(indicatorText);
-            if(indicator.size() == 0) {
-                load = false;
-            }
-        }
-    }
-
     public void clickOpenFileButton() {
         click(openFileButton);
-        this.openingWindow = openingWindowSelector;
-        this.openingWindowLinkField = (RemoteWebElement) openingWindow.findElementByName(openingWindowLinkFieldSelector);
-        List<WebElement> listNameFiled = openingWindow.findElementsByName(openingWindowFileNameFieldSelector);
-        this.openingWindowFileNameField = (RemoteWebElement) listNameFiled.get(1);
-        this.openingWindowOpenButton = (RemoteWebElement) openingWindow.findElementByName(openingWindowOpenButtonSelector);
-        this.openingWindowCancelButton = (RemoteWebElement) openingWindow.findElementByName(openingWindowCancelButtonSelector);
-    }
-
-    public void loadFileFromWindows(String path, String fileName) {
-        copyInBuffer(path);
-        click(openingWindowLinkField);
-        pastFromBuffer();
-        enterClick();
-        click(openingWindowFileNameField);
-        copyInBuffer(fileName);
-        pastFromBuffer();
-        click(openingWindowOpenButton);
+        getElementOpeningWindow();
     }
 
     public void clickLoadFileButton() {

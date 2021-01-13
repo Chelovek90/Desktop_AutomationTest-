@@ -9,23 +9,23 @@ public class BaseMainView extends BaseElements {
 
     public BaseMainView(WindowsDriver<RemoteWebElement> driver) {
         super(driver);
-        this.rootWindow = rootWindowId;
+        this.rootWindow = rootWindowSelector;
     }
 
     protected RemoteWebElement rootWindow;
-    protected RemoteWebElement treeWindow;
-    protected RemoteWebElement workWindow;
-    protected RemoteWebElement workFlowWindow;
+    @WindowsFindBy(accessibility = "DocumentHost")
+    private RemoteWebElement rootWindowSelector;
+    @WindowsFindBy(accessibility = "TabHeadersPanel")
+    private RemoteWebElement tabPanel;
+    private String tabHeadersSelector = "TabHeadersPanel";
+    private String tabNameHeadersSelector = "DocumentPaneItem";
+    private String tabCloseButtonHeaderSelector = "ControlBoxButtonPresenter";
+    private String nameValue = "Name";
 
-
-    protected RemoteWebElement rootWindowId;
-
-    @WindowsFindBy(accessibility = "TreeView")
-    protected RemoteWebElement treeWindowId;
-    protected String workWindowId = "DocumentHost";
-    protected String workFlowWindowID = "Workflow";
-
-    private String tabHeadersPanelClassName = "TabHeadersPanel";
-    private String tabHeaderClassName = "DocumentPaneItem";
+    public void closeWorkspace() {
+        RemoteWebElement header = (RemoteWebElement) tabPanel.findElementByClassName(tabNameHeadersSelector);
+        RemoteWebElement closeButton = (RemoteWebElement) header.findElementByClassName(tabCloseButtonHeaderSelector);
+        click(closeButton);
+    }
 
 }

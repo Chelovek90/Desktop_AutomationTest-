@@ -1,11 +1,15 @@
 import app.modules.loader.LoadLog;
+import app.modules.loader.LoadSurface;
 import app.view.mainView.BaseMainView;
 import app.view.treeProject.BaseTreeProject;
 import base.BaseTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class GeonaftTest extends BaseTest {
     private final int INDEXACTUALWELL = 0;
@@ -52,12 +56,33 @@ public class GeonaftTest extends BaseTest {
 
         new LoadLog(desktopSession)
 
-                .openLoader();
-//                .clickOpenFile()
-//                .loadLog("D:\\Data for testing\\Каротажи", "12_actual_CUT_2m.las")
-//                .clickLoadFile()
-//                .checkLoadLog()
-//                .checkEditor();
+                .openLoader()
+                .loadLog("D:\\Data for testing\\Каротажи", "12_actual_CUT_2m.las")
+                .clickLoadFile()
+                .getTree()
+                .checkLoadLog()
+                .checkEditor();
+    }
+
+
+    public static Stream<String> nameGenerator() {
+        return Stream.of("CPS.cps3", "GRD.grd", "irap.irap", "Zmap.zmap");
+    }
+    @ParameterizedTest
+    @MethodSource("nameGenerator")
+    public void testLoadSurface(String fileName) {
+        new LoadSurface(desktopSession)
+                .openLoader()
+                .loadSurface("D:\\Data for testing\\Поверхности\\IRAP", fileName)
+                .getTree()
+                .checkLoadSurface();
+    }
+
+    @Test
+    public void testCloseWorkspace() {
+        new BaseMainView(desktopSession)
+                .closeWorkspace();
 
     }
+
 }

@@ -38,6 +38,8 @@ public class Base {
     protected Robot robot;
     protected Actions actions;
     protected GifSequenceWriter gifSequenceWriter;
+    protected String clickablePoint = "TextBlock";
+
 
     public Base(WindowsDriver<RemoteWebElement> driver) {
         this.driver = driver;
@@ -76,7 +78,8 @@ public class Base {
     }
 
     protected Base rightClick(RemoteWebElement element) {
-        actions.contextClick(element).perform();
+        RemoteWebElement target = (RemoteWebElement) element.findElementByClassName(clickablePoint);
+        actions.contextClick(target).perform();
         return this;
     }
 

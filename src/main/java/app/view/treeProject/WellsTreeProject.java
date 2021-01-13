@@ -81,7 +81,7 @@ public class WellsTreeProject extends BaseTreeProject {
 //            makeElementScreenshot(mainViewSelector, "Fail search well by name " + newDate.format(date), appointment.ACTUAL);
 //        }else {makeElementScreenshot((RemoteWebElement) treeWindow.findElementByName(wellsTopBlock), targetWellForClick.getText(), appointment.ACTUAL);}
 
-        assertTrue(targetForClick != null, "Search for name " + nameWell + " returned no results");
+        assertTrue(targetForClick != null, "Search well for name " + nameWell + " returned no results");
     }
 
     public void clickWellByName(String name) {
@@ -96,14 +96,8 @@ public class WellsTreeProject extends BaseTreeProject {
         this.targetForClick = logsList.stream()
                 .filter(trajectory -> trajectory.findElement(By.className(clickablePoint)).getText().equals(nameLog))
                 .findFirst().orElse(null);
-        assertTrue(targetForClick != null, "Search for name " + nameLog + " returned no results");
+        assertTrue(targetForClick != null, "Search log for name " + nameLog + " returned no results");
     }
-
-    public void clickEditContextMenu(){
-        clickEditContextMenu((RemoteWebElement) targetForClick);
-    }
-
-
 
 //    public void clickWell(int index) {
 //        takeWellsList();
